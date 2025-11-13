@@ -1,15 +1,32 @@
 /* ============================================
    NAVIGATION.JS - Функции навигации
-   (Версия 4.0 - ТОЛЬКО АНИМАЦИИ)
+   (Оригинальная версия, обернутая в функцию)
    ============================================ */
 
 function initializeAllNavigationFeatures() {
-    
-    // Плавный скролл по якорям ВРЕМЕННО ПОЛНОСТЬЮ ОТКЛЮЧЕН для диагностики
 
-    console.log('⚠️ Плавный скролл в navigation.js временно отключен для теста.');
+    // Плавный скролл по якорям
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            
+            // Проверка, чтобы не мешать другим кнопкам
+            if (!href || href === '#' || !document.querySelector(href)) {
+                return;
+            }
 
-    // Анимация появления элементов при скролле (оставляем, она безопасна)
+            e.preventDefault();
+            const target = document.querySelector(href);
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+
+    // Анимация элементов при скролле
     try {
         const observer = new IntersectionObserver(function(entries, self) {
             entries.forEach(entry => {
@@ -27,5 +44,5 @@ function initializeAllNavigationFeatures() {
         console.warn('IntersectionObserver не поддерживается или не найдены элементы для анимации.');
     }
 
-    console.log('✅ Безопасные функции из navigation.js успешно инициализированы.');
+    console.log('✅ Оригинальные функции из navigation.js успешно инициализированы.');
 }
