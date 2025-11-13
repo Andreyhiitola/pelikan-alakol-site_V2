@@ -1,22 +1,27 @@
 /* ============================================
    NAVIGATION.JS - Функции навигации
-   (Версия-помощник, без самозапуска)
+   (Версия 3.0 - Безопасная)
    ============================================ */
 
 function initializeAllNavigationFeatures() {
     
-    // 1. Плавный скролл по якорям
+    // 1. Плавный скролл по якорям (безопасная версия)
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
+            
             const href = this.getAttribute('href');
-            // Игнорируем пустые якоря, чтобы не ломать другие кнопки
-            if (!href || href === '#') {
+            
+            // --- ГЛАВНОЕ ИЗМЕНЕНИЕ ---
+            // Если ссылка пустая (#) или ведет к несуществующему блоку,
+            // НИЧЕГО НЕ ДЕЛАЕМ и не мешаем другим скриптам.
+            if (!href || href === '#' || !document.querySelector(href)) {
                 return;
             }
-            
+            // -------------------------
+
+            e.preventDefault(); // Останавливаем стандартный переход только если якорь реальный
             const target = document.querySelector(href);
             if (target) {
-                e.preventDefault(); // Предотвращаем резкий скачок
                 target.scrollIntoView({
                     behavior: 'smooth',
                     block: 'start'
@@ -25,28 +30,5 @@ function initializeAllNavigationFeatures() {
         });
     });
 
-    // 2. Анимация появления элементов при скролле (если нужна)
-    try {
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
-        };
-
-        const observer = new IntersectionObserver(function(entries, self) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('fade-in');
-                    self.unobserve(entry.target);
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.card, .activity-card, .review-card').forEach(el => {
-            observer.observe(el);
-        });
-    } catch (e) {
-        console.warn('IntersectionObserver не поддерживается или не найдены элементы для анимации.');
-    }
-
-    console.log('✅ Функции из navigation.js успешно инициализированы.');
+    console.log('✅ Безопасные функции из navigation.js успешно инициализированы.');
 }
