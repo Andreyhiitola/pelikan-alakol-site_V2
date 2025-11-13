@@ -1,34 +1,31 @@
 /* ============================================
    NAVIGATION.JS - Функции навигации
-   (Версия 3.0 - Безопасная)
+   (Версия 4.0 - ТОЛЬКО АНИМАЦИИ)
    ============================================ */
 
 function initializeAllNavigationFeatures() {
     
-    // 1. Плавный скролл по якорям (безопасная версия)
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            
-            const href = this.getAttribute('href');
-            
-            // --- ГЛАВНОЕ ИЗМЕНЕНИЕ ---
-            // Если ссылка пустая (#) или ведет к несуществующему блоку,
-            // НИЧЕГО НЕ ДЕЛАЕМ и не мешаем другим скриптам.
-            if (!href || href === '#' || !document.querySelector(href)) {
-                return;
-            }
-            // -------------------------
+    // Плавный скролл по якорям ВРЕМЕННО ПОЛНОСТЬЮ ОТКЛЮЧЕН для диагностики
 
-            e.preventDefault(); // Останавливаем стандартный переход только если якорь реальный
-            const target = document.querySelector(href);
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
+    console.log('⚠️ Плавный скролл в navigation.js временно отключен для теста.');
+
+    // Анимация появления элементов при скролле (оставляем, она безопасна)
+    try {
+        const observer = new IntersectionObserver(function(entries, self) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                    self.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.card, .activity-card, .review-card').forEach(el => {
+            observer.observe(el);
         });
-    });
+    } catch (e) {
+        console.warn('IntersectionObserver не поддерживается или не найдены элементы для анимации.');
+    }
 
     console.log('✅ Безопасные функции из navigation.js успешно инициализированы.');
 }
