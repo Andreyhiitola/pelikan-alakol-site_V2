@@ -1777,3 +1777,8 @@ body.dark-mode {
     from { transform: translateY(-50px); }
     to { transform: translateY(0); }
 }
+#map {
+    height: 400px; /* Высота карты */
+    width: 100%;   /* Ширина карты */
+}
+
