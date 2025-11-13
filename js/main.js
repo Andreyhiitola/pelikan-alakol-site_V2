@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Функция для применения темы
     const applyTheme = (theme) => {
-        const icon = themeToggle.querySelector('i');
+        const icon = themeToggle ? themeToggle.querySelector('i') : null;
         if (theme === 'dark') {
             body.classList.add('dark-mode');
             if (icon) {
@@ -56,18 +56,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // Кнопка "Погода"
     document.querySelector('.weather-btn')?.addEventListener('click', () => {
         openModal(weatherModal);
-        // Если функция fetchWeather определена в weather.js, она будет вызвана там же
-        // Если нет, можно вызвать ее отсюда: if (typeof fetchWeather === 'function') fetchWeather();
+        if (typeof fetchWeather === 'function') {
+            fetchWeather();
+        }
     });
 
     // Кнопка "Карта"
     document.querySelector('.map-btn')?.addEventListener('click', () => {
         openModal(mapModal);
-        // Вызываем initMap только если она существует (определена в contacts.js)
         if (typeof initMap === 'function') {
             initMap();
         } else {
-            console.error('Функция initMap() не найдена. Убедитесь, что contacts.js подключен.');
+            console.warn('Функция initMap() не найдена. Убедитесь, что contacts.js подключен и раскомментирован.');
         }
     });
 
@@ -87,6 +87,19 @@ document.addEventListener('DOMContentLoaded', () => {
             closeModal();
         }
     });
+    
+    // =======================================================
+    // --- 3. ВЫЗОВ ФУНКЦИЙ ИЗ ДРУГИХ ("ВСПОМОГАТЕЛЬНЫХ") СКРИПТОВ ---
+    // =======================================================
+    
+    // Вызываем функции из navigation.js
+    if (typeof initializeAllNavigationFeatures === 'function') {
+        initializeAllNavigationFeatures();
+    } else {
+        console.warn('Функция initializeAllNavigationFeatures() не найдена. Убедитесь, что navigation.js подключен и раскомментирован.');
+    }
 
-    console.log('Основной скрипт успешно инициализирован.');
+    // Сюда можно будет добавить вызовы других скриптов по такому же принципу
+
+    console.log('Основной скрипт и все подключенные модули успешно инициализированы.');
 });
