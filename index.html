@@ -50,7 +50,7 @@ header {
 position: sticky;
 top: 0;
 z-index: 100;
-background: linear-gradient(135deg, rgba(45, 134, 89, 0.95), rgba(76, 168, 118, 0.95));
+background: linear-gradient(135deg, rgba(45, 134, 89, 0.85), rgba(76, 168, 118, 0.85));
 color: var(--white);
 padding: 15px 20px;
 box-shadow: var(--shadow);
@@ -59,6 +59,8 @@ justify-content: space-between;
 align-items: center;
 flex-wrap: wrap;
 gap: 15px;
+backdrop-filter: blur(10px);
+-webkit-backdrop-filter: blur(10px);
 }
 .header-left h1 {
 margin: 0;
@@ -131,7 +133,7 @@ font-size: 1.5em;
 }
 main {
 flex-grow: 1;
-padding: 20px;
+padding: 0px 20px 20px 20px;
 max-width: 100%;
 }
 .hero-section {
@@ -1009,6 +1011,15 @@ border-radius: 0;
 padding: 15px 20px;
 width: 100%;
 }
+}
+
+/* Smooth scrolling and scroll margin */
+html {
+    scroll-behavior: smooth;
+}
+
+h2 {
+    scroll-margin-top: 80px;
 }
 </style>
 </head>
