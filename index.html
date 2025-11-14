@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+<script>
+const CONFIG = {
+  dataPath: '.',
+  getDataFile: function(filename) {
+    return this.dataPath + '/' + filename;
+  }
+};
+console.log('✓ CONFIG загружена. Путь:', CONFIG.dataPath);
+</script>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Пеликан Алаколь - Семейный отдых на озере</title>
@@ -1008,6 +1018,8 @@ padding: 15px 20px;
 width: 100%;
 }
 }
+
+/* Infrastructure Section Styles */
 
 .infrastructure-item:hover {
   background: linear-gradient(135deg, rgba(115, 115, 215, 0.15), rgba(75, 75, 180, 0.15));
