@@ -2,57 +2,112 @@
 // РЕНДЕРИНГ ACCOMMODATION (НОМЕРА)
 // ========================================
 
+/**
+ * Рендерит список номеров.
+ * Возможны два формата данных:
+ * 1) массив объектов: [{...}, {...}]
+ * 2) объект: { accommodations: [{...}, {...}] }
+ * В обоих случаях формируем одну общую коллекцию rooms.
+ */
 function renderAccommodation(data) {
   const container = document.getElementById('roomsContainer');
-  
-  // Шаг 1: Проверяем контейнер
   if (!container) {
-    console.error('❌ Контейнер roomsContainer не найден');
+    console.error('❌ Контейнер roomsContainer не найден на странице');
     return;
   }
 
-  // Шаг 2: Проверяем данные
-  if (!data) {
-    console.error('❌ Нет данных для accommodation');
-    return;
-  }
+  // Поддержка двух форматов данных
+  let rooms = [];
 
-  // Шаг 3: Определяем формат данных
-  // Может быть: {accommodations: [...]} или просто [...]
-  let rooms;
-  
   if (Array.isArray(data)) {
-    rooms = data; // Если это уже массив
-  } else if (data.accommodations && Array.isArray(data.accommodations)) {
-    rooms = data.accommodations; // Если это объект с массивом
-  } else {
-    console.error('❌ Неверный формат данных accommodation');
+    rooms = data;
+  } else if (data && Array.isArray(data.accommodations)) {
+    rooms = data.accommodations;
+  }
+
+  if (!rooms.length) {
+    console.error('❌ Нет данных для accommodation или массив пуст');
+    container.innerHTML = '<p style="color: red;">Нет доступных номеров</p>';
     return;
   }
 
-  // Шаг 4: Проверяем есть ли номера
-  if (rooms.length === 0) {
-    console.error('❌ Нет номеров в данных');
-    return;
-  }
+  // Очистить контейнер перед отрисовкой
+  container.innerHTML = '';
 
-  // Шаг 5: Рендеринг
-  container.innerHTML = rooms.map(room => `
-    <div class="scroll-item">
-      <div class="photo-overlay"><i class="fas fa-expand"></i></div>
-      ${room.image ? `<img src="${room.image}" alt="${room.name}" style="height: 250px; object-fit: cover;">` : '<img src="https://via.placeholder.com/400x250?text=Room" style="height: 250px; object-fit: cover;">'}
-      <h3>${room.icon || '🏠'} ${room.name}</h3>
-      <p>${room.description}</p>
-      ${room.amenities && room.amenities.length > 0 ? `
-        <ul class="infra-features">
-          ${room.amenities.map(a => `<li>✓ ${a}</li>`).join('')}
-        </ul>
-      ` : ''}
-      <p><strong style="color: var(--primary-green); font-size: 1.1em;">от ${room.price} / ночь</strong></p>
-    </div>
-  `).join('');
+  // Рендеринг через создание элементов DOM (без опасного innerHTML-подстановки)
+  rooms.forEach(room => {
+    // Безопасная обработка полей
+    const name = room?.name ?? 'Номер';
+    const icon = room?.icon ?? '🏠';
+    const image = room?.image ?? '';
+    const description = room?.description ?? '';
+    const price = room?.price ?? '';
+    const amenities = Array.isArray(room?.amenities) ? room.amenities : [];
 
-  console.log(`✅ Accommodation загружены и отрисованы (${rooms.length} номеров)`);
+    // Локальная карточка
+    const card = document.createElement('div');
+    card.className = 'scroll-item';
+
+    // Фото
+    if (image) {
+      const img = document.createElement('img');
+      img.src = image;
+      img.alt = name;
+      img.style.height = '250px';
+      img.style.objectFit = 'cover';
+      card.appendChild(img);
+    } else {
+      // запасной placeholder, если фото нет
+      const placeholder = document.createElement('div');
+      placeholder.style.height = '250px';
+      placeholder.style.display = 'flex';
+      placeholder.style.alignItems = 'center';
+      placeholder.style.justifyContent = 'center';
+      placeholder.style.background = '#eee';
+      placeholder.style.color = '#666';
+      placeholder.textContent = 'Нет изображения';
+      card.appendChild(placeholder);
+    }
+
+    // Заголовок
+    const h3 = document.createElement('h3');
+    h3.textContent = `${icon} ${name}`;
+    card.appendChild(h3);
+
+    // Описание
+    if (description) {
+      const pDesc = document.createElement('p');
+      pDesc.textContent = description;
+      card.appendChild(pDesc);
+    }
+
+    // Удобства
+    if (amenities.length > 0) {
+      const ul = document.createElement('ul');
+      ul.className = 'infra-features';
+      amenities.forEach(a => {
+        const li = document.createElement('li');
+        li.textContent = `✓ ${a}`;
+        ul.appendChild(li);
+      });
+      card.appendChild(ul);
+    }
+
+    // Цена
+    if (price) {
+      const pPrice = document.createElement('p');
+      const strong = document.createElement('strong');
+      strong.style.color = 'var(--primary-green)';
+      strong.style.fontSize = '1.1em';
+      strong.textContent = `от ${price} / ночь`;
+      pPrice.appendChild(strong);
+      card.appendChild(pPrice);
+    }
+
+    container.appendChild(card);
+  });
+
+  console.log('✅ Accommodation загружены и отрисованы');
 }
 
 // Экспорт функции для использования в main.js
