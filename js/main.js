@@ -33,6 +33,47 @@ async function initializeData() {
     contacts,
     offer
   });
+// ========================================
+// ЗАГРУЗКА JSON ДАННЫХ
+// ========================================
+
+/**
+ * Функция загрузки JSON файла
+ */
+async function loadJSON(filename) {
+  try {
+    const response = await fetch(`./${filename}`);
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+    const data = await response.json();
+    console.log(`✅ Загружено: ${filename}`);
+    return data;
+  } catch (error) {
+    console.error(`❌ Ошибка загрузки ${filename}:`, error);
+    return null;
+  }
+}
+
+/**
+ * Инициализация всех данных при загрузке страницы
+ */
+async function initializeData() {
+  console.log('🔄 Загружаю данные...');
+  
+  // Загрузка всех JSON файлов
+  window.data = {
+    accommodation: await loadJSON('accommodation.json'),
+    activities: await loadJSON('activities.json'),
+    menu: await loadJSON('menu.json'),
+    gallery: await loadJSON('gallery.json'),
+    reviews: await loadJSON('reviews.json'),
+    contacts: await loadJSON('contacts.json'),
+    offer: await loadJSON('offer.json')
+  };
+
+  console.log('✅ Все данные загружены:', window.data);
+}
 
   // Передаче данных в функции рендеринга
   if (accommodation) renderAccommodation(accommodation);
@@ -45,4 +86,8 @@ async function initializeData() {
 }
 
 // Запуск при загрузке страницы
-document.addEventListener('DOMContentLoaded', initializeData);
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('📄 DOM загружен');
+  initializeData();
+});
+
