@@ -1,0 +1,24 @@
+// activities.js
+function renderActivities(data) {
+  const container = document.getElementById('activitiesContainer');
+  if (!container || !data) return;
+
+  let activities = Array.isArray(data) ? data : (data.activities || []);
+  if (!activities.length) return;
+
+  container.innerHTML = '';
+  activities.forEach(activity => {
+    const card = document.createElement('div');
+    card.className = 'scroll-item';
+    card.innerHTML = `
+      <h3>${activity.icon || '🎯'} ${activity.title}</h3>
+      <p><strong>🕐 ${activity.time}</strong></p>
+      <p><strong>📍 ${activity.location}</strong></p>
+      <p>${activity.description}</p>
+      ${activity.instructor ? `<p>👤 ${activity.instructor}</p>` : ''}
+    `;
+    container.appendChild(card);
+  });
+  console.log('✅ Activities загружены');
+}
+window.renderActivities = renderActivities;
