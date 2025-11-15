@@ -1,3 +1,5 @@
+Вот пример переписанного JSON с добавленными полями `"image"`:
+
 [
   {
     "id": "econom-3",
@@ -8,7 +10,8 @@
     "price": "12 600 ₸/ночь",
     "capacity": 3,
     "area": 19,
-    "bathroom": "Общие"
+    "bathroom": "Общие",
+    "image": "./images/rooms/econom-3.jpg"
   },
   {
     "id": "econom-connect-5",
@@ -19,7 +22,8 @@
     "price": "21 000 ₸/ночь",
     "capacity": 5,
     "area": 38,
-    "bathroom": "Частные"
+    "bathroom": "Частные",
+    "image": "./images/rooms/econom-connect-5.jpg"
   },
   {
     "id": "family-6",
@@ -31,7 +35,8 @@
     "info": "Самый популярный",
     "capacity": 6,
     "area": 38,
-    "bathroom": "Частные"
+    "bathroom": "Частные",
+    "image": "./images/rooms/family-6.jpg"
   },
   {
     "id": "standard-2",
@@ -43,7 +48,8 @@
     "info": "Для пар",
     "capacity": 2,
     "area": 25,
-    "bathroom": "Частная"
+    "bathroom": "Частная",
+    "image": "./images/rooms/standard-2.jpg"
   },
   {
     "id": "lux-4",
@@ -56,7 +62,8 @@
     "capacity": 4,
     "area": 60,
     "bathroom": "Частная",
-    "view": "Озеро"
+    "view": "Озеро",
+    "image": "./images/rooms/lux-4.jpg"
   },
   {
     "id": "cottage-8",
@@ -69,7 +76,8 @@
     "capacity": 8,
     "area": 80,
     "bathroom": "Частная",
-    "kitchen": true
+    "kitchen": true,
+    "image": "./images/rooms/cottage-8.jpg"
   },
   {
     "id": "vip-bungalo",
@@ -83,6 +91,19 @@
     "area": 120,
     "bathroom": "Люкс",
     "view": "Озеро",
-    "privateBeach": true
+    "privateBeach": true,
+    "image": "./images/rooms/vip-bungalo.jpg"
   }
 ]
+
+После обновления JSON и размещения фото в папке `images/rooms/` их будет легко отобразить в функции `renderAccommodation` с помощью поля `image`.]
+
+[1](https://archicgi.com/case-studies/hotel-interior-3d-rendering-projects/)
+[2](https://stackoverflow.com/questions/18830672/build-a-room-dynamically)
+[3](https://reroom.ai)
+[4](https://www.pixready.com/blog/hotel-rendering)
+[5](https://n2qstudio.com/hotel-room-rendering/)
+[6](https://www.roomgpt.io)
+[7](https://www.freepik.com/free-photos-vectors/hotel-render)
+[8](https://www.shutterstock.com/search/hotel-room-3d-rendering)
+[9](https://www.livingspaces.com/inspiration/3d-room-designer/p135716)
