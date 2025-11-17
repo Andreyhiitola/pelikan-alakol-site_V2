@@ -11,11 +11,16 @@ function renderActivities(data) {
     const card = document.createElement('div');
     card.className = 'scroll-item';
     card.innerHTML = `
-      <h3>${activity.icon || '🎯'} ${activity.title}</h3>
+      ${activity.image ? `<img src="${activity.image}" alt="${activity.name}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px;">` : ''}
+      <h3>${activity.icon || '🎯'} ${activity.name}</h3>
       <p><strong>🕐 ${activity.time}</strong></p>
       <p><strong>📍 ${activity.location}</strong></p>
       <p>${activity.description}</p>
-      ${activity.instructor ? `<p>👤 ${activity.instructor}</p>` : ''}
+      ${activity.features && activity.features.length ? `
+        <div class="features" style="margin-top: 10px;">
+          ${activity.features.map(f => `<span style="display: inline-block; background: #2d8659; color: white; padding: 4px 8px; border-radius: 4px; margin: 2px; font-size: 0.85em;">${f}</span>`).join('')}
+        </div>
+      ` : ''}
     `;
     container.appendChild(card);
   });
