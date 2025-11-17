@@ -46,6 +46,9 @@ function createContactCard({ icon, title, bodyHtml, buttonsHtml }) {
 
 // КЛИКАБЕЛЬНЫЕ НОМЕРА
 function createPhoneCard(phones) {
+  const card = document.createElement('div');
+  card.className = 'contact-card';
+
   const bodyHtml = phones.map(phone => `
     <div class="phone-item">
       <span class="phone-label">${phone.label}:</span>
@@ -54,6 +57,17 @@ function createPhoneCard(phones) {
       </a>
     </div>
   `).join('');
+
+  card.innerHTML = `
+    <h3><i class="fas fa-phone-alt"></i> Телефон</h3>
+    <div class="contact-info">
+      ${bodyHtml}
+    </div>
+  `;
+
+  return card;
+}
+
 
   const buttonsHtml = phones.map(phone => `
     <div class="contact-btn-group">
