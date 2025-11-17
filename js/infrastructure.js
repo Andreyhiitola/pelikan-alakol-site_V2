@@ -1,37 +1,18 @@
-async function loadInfrastructure() {
-  try {
-    const filePath = CONFIG.getDataFile('infrastructure.json');
-    console.log('📁 Загрузка:', filePath);
-    
-    const response = await fetch(filePath);
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    
-    const data = await response.json();
-    const list = document.getElementById('infrastructureList');
-    
-    if (!list) {
-      console.warn('⚠️ Элемент #infrastructureList не найден');
-      return;
-    }
-    
-    if (!data.infrastructure || data.infrastructure.length === 0) {
-      list.innerHTML = '<p>Инфраструктура не найдена</p>';
-      return;
-    }
-    
-    list.innerHTML = data.infrastructure.map(item => `
-      <div class="infrastructure-item">
-        <h3>${item.title || 'Без названия'}</h3>
-        <p>${item.description || 'Нет описания'}</p>
-      </div>`
-    ).join('');
-    
-    console.log('✅ Инфраструктура загружена');
-  } catch(error) {
-    console.error('❌ Ошибка загрузки:', error);
-    const list = document.getElementById('infrastructureList');
-    if (list) list.innerHTML = `<p>❌ Ошибка: ${error.message}</p>`;
-  }
-}
+function renderInfrastructure(data) {
+  const container = document.getElementById('infrastructureContainer');
+  if (!container || !data || !data.infrastructure) return;
 
-document.addEventListener('DOMContentLoaded', loadInfrastructure);
+  container.innerHTML = ''; // очистить предыдущий контент
+
+  data.infrastructure.forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'infrastructure-card';
+    card.innerHTML = `
+      <h3>${item.title}</h3>
+      <p class="infrastructure-description">${item.description}</p>
+    `;
+    container.appendChild(card);
+  });
+  console.log('✅ Infrastructure загружена');
+}
+window.renderInfrastructure = renderInfrastructure;
