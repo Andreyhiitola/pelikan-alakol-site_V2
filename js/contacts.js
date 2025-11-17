@@ -69,19 +69,32 @@ function createPhoneCard(phones) {
 }
 
 function createTelegramCard(telegram) {
+  const buttons = [];
+
+  if (telegram.userUrl) {
+    buttons.push(`
+      <a href="${telegram.userUrl}" target="_blank" class="contact-btn">
+        <i class="fab fa-telegram"></i> Написать в Telegram
+      </a>
+    `);
+  }
+
+  if (telegram.botUrl) {
+    buttons.push(`
+      <a href="${telegram.botUrl}" target="_blank" class="contact-btn">
+        <i class="fab fa-telegram"></i> Связаться с ботом
+      </a>
+    `);
+  }
+
   return createContactCard({
     icon: 'fab fa-telegram',
     title: 'Telegram',
     bodyHtml: `
       <strong>Оперативная связь</strong><br>
-      ${telegram.description}<br>
-      Ответим в течение 30 минут
+      ${telegram.description || ''}
     `,
-    buttonsHtml: `
-      <a href="${telegram.url}" target="_blank" class="contact-btn">
-        <i class="fab fa-telegram"></i> Открыть Telegram
-      </a>
-    `
+    buttonsHtml: buttons.join('')
   });
 }
 
