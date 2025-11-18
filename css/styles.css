@@ -1,0 +1,9 @@
+.filter-section {
+  /* если есть, можно убрать ограничения: */
+  /* max-width: none; */
+}
+
+#mbh-form-wrapper {
+  width: 100%;
+  box-sizing: border-box; /* чтобы паддинги не ломали ширину */
+}
