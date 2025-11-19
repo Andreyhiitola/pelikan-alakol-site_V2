@@ -23,7 +23,6 @@ async function loadInfrastructure() {
 
       container.appendChild(card);
     });
-
   } catch (error) {
     console.error('[translate:Ошибка загрузки инфраструктуры]', error);
     const container = document.getElementById('infrastructureContainer');
@@ -32,3 +31,17 @@ async function loadInfrastructure() {
     }
   }
 }
+
+// Функция для горизонтального скролла элементов
+function scrollItems(section, direction) {
+  const containerId = section + 'Container';
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  const scrollAmount = container.clientWidth * 0.8; // Прокрутка на 80% ширины контейнера
+  container.scrollBy({ left: scrollAmount * direction, behavior: 'smooth' });
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  loadInfrastructure();
+});
