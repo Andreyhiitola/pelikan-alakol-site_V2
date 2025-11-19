@@ -1,39 +1,24 @@
 async function loadInfrastructure() {
   try {
-    // Получаем путь к JSON-файлу с инфраструктурой (проверьте CONFIG.getDataFile)
     const response = await fetch(CONFIG.getDataFile('infrastructure.json'));
-
-    if (!response.ok) {
-      // Если сервер вернул ошибку, генерируем исключение
-      throw new Error('HTTP ошибка: ' + response.status);
-    }
-
-    // Парсим JSON из ответа
+    if (!response.ok) throw new Error('HTTP ошибка: ' + response.status);
     const data = await response.json();
 
-    // Проверяем, что внутри есть нужный массив инфраструктуры
-    if (!data.infrastructure || !Array.isArray(data.infrastructure)) {
-      throw new Error('Неверная структура данных инфраструктуры');
-    }
+    // Проверяем, что это массив
+    if (!Array.isArray(data)) throw new Error('Неверная структура данных: ожидается массив');
 
-    // Находим контейнер для отображения
     const container = document.getElementById('infrastructureContainer');
-    if (!container) {
-      console.error('Контейнер для инфраструктуры не найден');
-      return;
-    }
+    if (!container) return;
 
-    // Очищаем содержимое контейнера
     container.innerHTML = '';
 
-    // Перебираем каждый объект инфраструктуры для создания карточек
-    data.infrastructure.forEach(item => {
+    data.forEach(item => {
       const card = document.createElement('div');
       card.className = 'scroll-item';
 
       card.innerHTML = `
-        ${item.image ? `<img src="${item.image}" alt="${item.title || ''}">` : ''}
-        <h3>${item.title || ''}</h3>
+        ${item.image ? `<img src="${item.image}" alt="${item.name || ''}">` : ''}
+        <h3>${item.name || ''}</h3>
         <p>${item.description || ''}</p>
       `;
 
@@ -41,18 +26,10 @@ async function loadInfrastructure() {
     });
 
   } catch (error) {
-    // Логируем ошибку в консоль для разработчика
     console.error('[translate:Ошибка загрузки инфраструктуры]', error);
-
-    // Показываем сообщение об ошибке пользователю
     const container = document.getElementById('infrastructureContainer');
     if (container) {
       container.innerHTML = '<div class="error">[translate:Не удалось загрузить инфраструктуру.]</div>';
     }
   }
 }
-
-// Запуск функции после загрузки страницы
-window.addEventListener('DOMContentLoaded', () => {
-  loadInfrastructure();
-});
