@@ -16,11 +16,3 @@
   text-overflow: ellipsis;
   white-space: normal;
 }
-
-.room-image {
-  width: 100%;
-  height: auto;
-  max-height: 300px; /* опционально */
-  object-fit: contain;
-  display: block;
-}
