@@ -30,9 +30,9 @@ function renderAccommodation(data) {
       const img = document.createElement('img');
       img.src = imgSrc;
       img.alt = room.name;
-      img.style.height = '250px';
+      img.style.height = '150px';
       img.style.objectFit = 'cover';
-      img.style.width = '100%';
+      img.style.width = '70%';
       img.onerror = () => {
         img.src = './images/rooms/placeholder.jpg';
       };
