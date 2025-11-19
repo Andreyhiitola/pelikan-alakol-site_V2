@@ -1,20 +1,32 @@
 async function loadInfrastructure() {
   try {
+    // Получаем путь к JSON-файлу с инфраструктурой (проверьте CONFIG.getDataFile)
     const response = await fetch(CONFIG.getDataFile('infrastructure.json'));
-    if (!response.ok) throw new Error('HTTP ' + response.status);
 
-    const data = await response.json();
-    console.log("Fetched infrastructure data:", data); // Debug log
-
-    if (!data.infrastructure || !Array.isArray(data.infrastructure)) {
-      throw new Error("Invalid infrastructure data structure");
+    if (!response.ok) {
+      // Если сервер вернул ошибку, генерируем исключение
+      throw new Error('HTTP ошибка: ' + response.status);
     }
 
-    const container = document.getElementById('infrastructureContainer');
-    if (!container) return;
+    // Парсим JSON из ответа
+    const data = await response.json();
 
+    // Проверяем, что внутри есть нужный массив инфраструктуры
+    if (!data.infrastructure || !Array.isArray(data.infrastructure)) {
+      throw new Error('Неверная структура данных инфраструктуры');
+    }
+
+    // Находим контейнер для отображения
+    const container = document.getElementById('infrastructureContainer');
+    if (!container) {
+      console.error('Контейнер для инфраструктуры не найден');
+      return;
+    }
+
+    // Очищаем содержимое контейнера
     container.innerHTML = '';
 
+    // Перебираем каждый объект инфраструктуры для создания карточек
     data.infrastructure.forEach(item => {
       const card = document.createElement('div');
       card.className = 'scroll-item';
@@ -27,15 +39,20 @@ async function loadInfrastructure() {
 
       container.appendChild(card);
     });
+
   } catch (error) {
-    console.error('loadInfrastructure error', error);
+    // Логируем ошибку в консоль для разработчика
+    console.error('[translate:Ошибка загрузки инфраструктуры]', error);
+
+    // Показываем сообщение об ошибке пользователю
     const container = document.getElementById('infrastructureContainer');
     if (container) {
-      container.innerHTML = '<div class="error">Не удалось загрузить инфраструктуру.</div>';
+      container.innerHTML = '<div class="error">[translate:Не удалось загрузить инфраструктуру.]</div>';
     }
   }
 }
 
+// Запуск функции после загрузки страницы
 window.addEventListener('DOMContentLoaded', () => {
   loadInfrastructure();
 });
