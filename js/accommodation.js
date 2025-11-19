@@ -52,7 +52,7 @@ function renderAccommodation(data) {
       img.style.height = '250px';
       img.style.objectFit = 'cover';
       img.onerror = () => {
-        img.src = './images/placeholder.jpg';
+        img.src = './images/rooms/placeholder.jpg';
       };
       link.appendChild(img);
     }
