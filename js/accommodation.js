@@ -1,44 +1,24 @@
-// Функция рендеринга карточек жилья
 function renderAccommodation(data) {
   const container = document.getElementById('roomsContainer');
-  
-  if (!container) {
-    console.error('❌ roomsContainer не найден');
-    return;
-  }
-
-  if (!data) {
-    console.error('❌ data не передана');
-    return;
-  }
-
-  const rooms = Array.isArray(data) ? data : (data.accommodations || []);
-  
-  if (!rooms.length) {
-    console.error('❌ нет данных accommodation');
-    container.innerHTML = '<div class="error-message">Номера не найдены</div>';
-    return;
-  }
+  if (!container) return;
 
   container.innerHTML = '';
 
+  const rooms = Array.isArray(data) ? data : (data.accommodations || []);
+
   rooms.forEach(room => {
-    if (!room.id) {
-      console.warn('Пропущена карточка без id', room);
-      return;
-    }
-    if (!room.name) {
-      console.warn(`Пропущена карточка без name для id=${room.id}`);
+    if (!room.id || !room.name) {
+      console.warn('Пропущена некорректная карточка', room);
       return;
     }
     const price = Number(room.price);
     if (isNaN(price) || price <= 0) {
-      console.warn(`Пропущена карточка с некорректной ценой для id=${room.id}`, room.price);
+      console.warn(`Пропущена карточка с некорректной ценой для id=${room.id}`);
       return;
     }
 
     const card = document.createElement('div');
-    card.className = 'scroll-item';
+    card.className = 'scroll-item accommodation-card'; // добавлен класс для CSS
 
     const link = document.createElement('a');
     link.href = `accommodation.html?id=${encodeURIComponent(room.id)}`;
@@ -52,6 +32,7 @@ function renderAccommodation(data) {
       img.alt = room.name;
       img.style.height = '250px';
       img.style.objectFit = 'cover';
+      img.style.width = '100%';
       img.onerror = () => {
         img.src = './images/rooms/placeholder.jpg';
       };
@@ -65,6 +46,7 @@ function renderAccommodation(data) {
     if (room.description) {
       const p = document.createElement('p');
       p.textContent = room.description;
+      p.className = 'accommodation-description'; // добавлен класс для CSS обрезки
       link.appendChild(p);
     }
 
@@ -83,7 +65,6 @@ function renderAccommodation(data) {
   console.log(`✅ Accommodation: ${rooms.length} номеров (валидных)`);
 }
 
-// Функция загрузки JSON с обработкой ошибок
 function loadAccommodationData(url) {
   fetch(url)
     .then(response => {
@@ -104,7 +85,6 @@ function loadAccommodationData(url) {
     });
 }
 
-// Запуск при загрузке страницы
 document.addEventListener('DOMContentLoaded', () => {
-  loadAccommodationData('rooms.json'); // Укажите правильный путь к JSON
+  loadAccommodationData('accommodation.json'); // Укажите правильный путь к JSON
 });
