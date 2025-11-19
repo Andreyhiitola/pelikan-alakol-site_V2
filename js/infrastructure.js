@@ -4,12 +4,17 @@ async function loadInfrastructure() {
     if (!response.ok) throw new Error('HTTP ' + response.status);
 
     const data = await response.json();
+    console.log("Fetched infrastructure data:", data); // Debug log
+
+    if (!data.infrastructure || !Array.isArray(data.infrastructure)) {
+      throw new Error("Invalid infrastructure data structure");
+    }
+
     const container = document.getElementById('infrastructureContainer');
     if (!container) return;
 
     container.innerHTML = '';
 
-    // Ожидаем формат: { "infrastructure": [ { "title": "...", "description": "...", "icon": "...", "image": "..." } ] }
     data.infrastructure.forEach(item => {
       const card = document.createElement('div');
       card.className = 'scroll-item';
@@ -31,7 +36,6 @@ async function loadInfrastructure() {
   }
 }
 
-// запуск вместе с остальными
 window.addEventListener('DOMContentLoaded', () => {
   loadInfrastructure();
 });
